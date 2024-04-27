@@ -56,10 +56,12 @@ while True:
         cy=int(y1+y2)//2
         if 'car' in c:
             list1.append([cx, cy])
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 255, 255), 2)
+            #cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 255, 255), 2)
     
+    counter1 = []
+    list2 = []
     for i, polyline in enumerate (polylines):
-        
+        list2.append(i)    
         cv2.polylines(frame, [polyline], True, (0, 255, 0), 2)
         cvzone.putTextRect(frame, f'{area_names[i]}', tuple(polyline[0]), 1, 1)
         for i1 in list1:
@@ -69,6 +71,11 @@ while True:
             if result >= 0:
                 cv2.circle(frame, (cx1, cy1), 5, (255, 0, 0), -1)
                 cv2.polylines(frame, [polyline], True, (0, 0, 255), 2)
+                counter1.append(cx1)
+    car_count = len(counter1)
+    free_space = len(list2 - car_count)
+    cvzone.putTextRect(frame, f'CARCOUNTER:- {car_count}', (50, 60), 2, 2)
+    cvzone.putTextRect(frame, f'FREESPACE:- {free_space}', (50, 160), 2, 2)
     cv2.imshow('FRAME', frame)
     key = cv2.waitKey(1) & 0xFF
 
